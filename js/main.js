@@ -31,9 +31,15 @@ async function SearchbyNameAPI(Meal) {
     let response = await fetch(
       `https://www.themealdb.com/api/json/v1/1/search.php?s=${Meal}`
     );
+    if (response.ok)
+    {
     let result = await response.json();
     DisplayMeals(result);
-    $(".loader").fadeOut(300);
+    }
+    else {
+      $(".loader").fadeOut(300);
+    }
+    
   } catch (error) {
     console.error("Error fetching data:", error);
   }
@@ -46,7 +52,6 @@ async function SearchbyLetterAPI(letter) {
       `https://www.themealdb.com/api/json/v1/1/search.php?f=${letter}`
     );
     let result = await response.json();
-    console.log(result);
     document.getElementById("Searchinputs").classList.add("d-none");
     DisplayMeals(result);
   } catch (error) {
