@@ -157,31 +157,32 @@ function closedetails() {
 }
 
 function DisplayMeals(data) {
-  let box = ``;
-  let meals = data.meals;
+  $('.loader').fadeOut(400, function() {
+    $('#row-data').fadeIn(400);
+    let box = ``;
+    let meals = data.meals;
 
-  if (meals) {
-    for (let i = 0; i < meals.length; i++) {
-      box += `
-            <div class="col-xl-3 col-lg-4 col-md-6">
-                    <div class="food-item" onclick="DetailsbyidAPI(${meals[i].idMeal})">
-                        <img src="${meals[i].strMealThumb}" class="w-100 rounded-3" alt="${meals[i].strMeal}">
-                        <div class="item-layer d-flex justify-content-center align-items-center"><h1 class = "fs-4">${meals[i].strMeal}</h1></div>
-                    </div>
-                </div>
-            `;
+    if (meals) {
+      for (let i = 0; i < meals.length; i++) {
+        box += `
+          <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="food-item" onclick="DetailsbyidAPI(${meals[i].idMeal})">
+              <img src="${meals[i].strMealThumb}" class="w-100 rounded-3" alt="${meals[i].strMeal}">
+              <div class="item-layer d-flex justify-content-center align-items-center"><h1 class="fs-4">${meals[i].strMeal}</h1></div>
+            </div>
+          </div>
+        `;
+      }
+    } else {
+      box = `<p class="text-center text-white">No meals found</p>`;
     }
-  } else {
-    box = `<p class="text-center text-white">No meals found</p>`;
-  }
 
-  document.getElementById("row-data").innerHTML = box;
+    $('#row-data').html(box);
+  });
 }
 
-
-function DisplayDetails(DetailsData)
-{
-  document.getElementById('mealDetails').classList.remove('d-none');
+function DisplayDetails(DetailsData) {
+  $('#mealDetails').removeClass('d-none');
   
   let meal = DetailsData.meals[0];
 
@@ -206,41 +207,38 @@ function DisplayDetails(DetailsData)
   let box = ``;
 
   box += `
-        <div class="col-md-3 text-white">
-            <img src="${meal.strMealThumb}" class="w-100" alt="">
-            <h4 class="fs-2">${meal.strMeal}</h4>
-        </div>
-        <div class="col-md-9 text-white position-relative">
-            <i class="fa-solid fa-x fs-3 position-absolute end-0 close-btn" onclick = "closedetails()"></i>
+    <div class="col-md-3 text-white">
+      <img src="${meal.strMealThumb}" class="w-100" alt="">
+      <h4 class="fs-2">${meal.strMeal}</h4>
+    </div>
+    <div class="col-md-9 text-white position-relative">
+      <i class="fa-solid fa-x fs-3 position-absolute end-0 close-btn" onclick="closedetails()"></i>
 
-            <h3>Instructions</h3>
-            <p>${meal.strInstructions}</p>
-            <p class="fw-bold fs-3">Area: ${meal.strArea}</p>
-            <p class="fw-bold fs-3">Category: ${meal.strCategory}</p>
-            <div>
-                <p class="fs-4">Recipes:</p>
-                <ul class="d-flex list-unstyled flex-wrap">
-                    ${ingredients}
-                </ul>
-            </div>
-            <div>
-                <p class="fs-4">Tags:</p>
-                <ul class="d-flex list-unstyled">
-                    ${Alltags}
-                </ul>
-            </div>
-            <div class="btns d-flex">
-                <a target="_blank" href="${meal.strSource}" class="btn btn-success m-2">Source</a>
-                <a target="_blank" href="${meal.strYoutube}" class="btn btn-danger m-2">YouTube</a>
-            </div>
-        </div>
-    `;
+      <h3>Instructions</h3>
+      <p>${meal.strInstructions}</p>
+      <p class="fw-bold fs-3">Area: ${meal.strArea}</p>
+      <p class="fw-bold fs-3">Category: ${meal.strCategory}</p>
+      <div>
+        <p class="fs-4">Recipes:</p>
+        <ul class="d-flex list-unstyled flex-wrap">
+          ${ingredients}
+        </ul>
+      </div>
+      <div>
+        <p class="fs-4">Tags:</p>
+        <ul class="d-flex list-unstyled">
+          ${Alltags}
+        </ul>
+      </div>
+      <div class="btns d-flex">
+        <a target="_blank" href="${meal.strSource}" class="btn btn-success m-2">Source</a>
+        <a target="_blank" href="${meal.strYoutube}" class="btn btn-danger m-2">YouTube</a>
+      </div>
+    </div>
+  `;
 
-  document.getElementById("mealDetails").innerHTML = box;
-
+  $('#mealDetails').html(box);
 }
-
-
 
 
 function DisplaySearch() {
