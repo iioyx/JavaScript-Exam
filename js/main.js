@@ -69,7 +69,6 @@ async function SearchbyLetterAPI(letter) {
       `https://www.themealdb.com/api/json/v1/1/search.php?f=${letter}`
     );
     let result = await response.json();
-    document.getElementById("Searchinputs").classList.add("d-none");
     DisplayMeals(result);
   } catch (error) {
     console.error("Error fetching data:", error);
