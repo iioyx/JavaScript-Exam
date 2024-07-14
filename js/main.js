@@ -153,7 +153,7 @@ SearchbyNameAPI("");
 
 
 function closedetails() {
-  document.getElementById("Searchinputs").classList.add("d-none");
+  document.getElementById('mealDetails').classList.add('d-none');
 }
 
 function DisplayMeals(data) {
@@ -179,7 +179,10 @@ function DisplayMeals(data) {
 }
 
 
-function DisplayDetails(DetailsData) {
+function DisplayDetails(DetailsData)
+{
+  document.getElementById('mealDetails').classList.remove('d-none');
+  
   let meal = DetailsData.meals[0];
 
   let ingredients = ``;
@@ -203,11 +206,13 @@ function DisplayDetails(DetailsData) {
   let box = ``;
 
   box += `
-        <div class="col-md-4 text-white">
+        <div class="col-md-3 text-white">
             <img src="${meal.strMealThumb}" class="w-100" alt="">
             <h4 class="fs-2">${meal.strMeal}</h4>
         </div>
-        <div class="col-md-8 text-white position-relative">
+        <div class="col-md-9 text-white position-relative">
+            <i class="fa-solid fa-x fs-3 position-absolute end-0 close-btn" onclick = "closedetails()"></i>
+
             <h3>Instructions</h3>
             <p>${meal.strInstructions}</p>
             <p class="fw-bold fs-3">Area: ${meal.strArea}</p>
@@ -231,8 +236,11 @@ function DisplayDetails(DetailsData) {
         </div>
     `;
 
-  document.getElementById("row-data").innerHTML = box;
+  document.getElementById("mealDetails").innerHTML = box;
+
 }
+
+
 
 
 function DisplaySearch() {
