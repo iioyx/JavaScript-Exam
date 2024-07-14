@@ -1,4 +1,4 @@
-// Side Nav
+// <=========== Side Nav ===========> //
 function OpenSideNav() {
   $(".side-nav").animate({ left: 0 }, 500);
   $("#open-icon").removeClass("fa-align-justify");
@@ -15,15 +15,11 @@ function CloseSideNav() {
 }
 
 CloseSideNav();
-$("#open-icon").click(function () {
-  if ($(".side-nav").css("left") == "0px") {
-    CloseSideNav();
-  } else {
-    OpenSideNav();
-  }
-});
 
-// Side Nav
+
+// <=========== Side Nav ===========> //
+
+// <=========== APIs ===========> //
 
 async function SearchbyNameAPI(Meal) {
   try {
@@ -35,6 +31,27 @@ async function SearchbyNameAPI(Meal) {
     {
     let result = await response.json();
     DisplayMeals(result);
+    }
+    else {
+      $(".loader").fadeOut(300);
+    }
+    
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+}
+
+async function GenerateNewFoodAPI(Meal) {
+  try {
+    CloseSideNav();
+    let response = await fetch(
+      `https://www.themealdb.com/api/json/v1/1/search.php?s=${Meal}`
+    );
+    if (response.ok)
+    {
+    let result = await response.json();
+    DisplayMeals(result);
+    closedetails()
     }
     else {
       $(".loader").fadeOut(300);
@@ -59,7 +76,87 @@ async function SearchbyLetterAPI(letter) {
   }
 }
 
+async function DetailsbyidAPI(id) {
+  try {
+    CloseSideNav();
+    let response = await fetch(
+      `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
+    );
+    let result = await response.json();
+    console.log(result);
+    DisplayDetails(result);
+  } catch (error) {
+    console.error("Error fetching details:", error);
+  }
+}
+
+async function categoriesAPI() {
+  CloseSideNav();
+  let response = await fetch(
+    `https://www.themealdb.com/api/json/v1/1/categories.php`
+  );
+  let result = await response.json();
+  Displaycategories(result);
+}
+
+async function FilterbyCategoryAPI(Category) {
+  CloseSideNav();
+  let response = await fetch(
+    `https://www.themealdb.com/api/json/v1/1/filter.php?c=${Category}`
+  );
+  let result = await response.json();
+  DisplayFilterbyCategory(result);
+}
+
+
+async function AriaAPI() {
+  let response = await fetch(
+    "https://www.themealdb.com/api/json/v1/1/list.php?a=list"
+  );
+  let result = await response.json();
+  DisplayAllAria(result);
+}
+
+async function FilterbyAriaAPI(Aria) {
+  let response = await fetch(
+    `https://www.themealdb.com/api/json/v1/1/filter.php?a=${Aria}`
+  );
+  let result = await response.json();
+  console.log(result, "filter by aria");
+  DisplayFoodbyAria(result);
+}
+
+async function getallIngredientsAPI() {
+  let response = await fetch(
+    `https://www.themealdb.com/api/json/v1/1/list.php?i=list`
+  );
+  let result = await response.json();
+  DisplayIngredients(result);
+}
+
+
+async function FilterbymainingredientAPI(ingredient) {
+  let response = await fetch(
+    `https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredient}`
+  );
+  let result = await response.json();
+  DisplayFilterbyMainIngredient(result);
+}
+
+
 SearchbyNameAPI("");
+
+
+// <=========== APIs ===========> //
+
+
+
+// <=========== Display Functions ===========> //
+
+
+function closedetails() {
+  document.getElementById("Searchinputs").classList.add("d-none");
+}
 
 function DisplayMeals(data) {
   document.getElementById("Searchinputs").classList.remove("d-none");
@@ -86,19 +183,6 @@ function DisplayMeals(data) {
   document.getElementById("row-data").innerHTML = box;
 }
 
-async function DetailsbyidAPI(id) {
-  try {
-    CloseSideNav();
-    let response = await fetch(
-      `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
-    );
-    let result = await response.json();
-    console.log(result);
-    DisplayDetails(result);
-  } catch (error) {
-    console.error("Error fetching details:", error);
-  }
-}
 
 function DisplayDetails(DetailsData) {
   document.getElementById("row-data").innerHTML = "";
@@ -131,7 +215,7 @@ function DisplayDetails(DetailsData) {
             <h4 class="fs-2">${meal.strMeal}</h4>
         </div>
         <div class="col-md-8 text-white position-relative">
-            <i class="fa-solid position-absolute fa-x closedetails fs-4" onclick="SearchbyNameAPI('')"></i>
+            <i class="fa-solid position-absolute fa-x closedetails fs-4" onclick="GenerateNewFoodAPI('')"></i>
             <h3>Instructions</h3>
             <p>${meal.strInstructions}</p>
             <p class="fw-bold fs-3">Area: ${meal.strArea}</p>
@@ -158,9 +242,6 @@ function DisplayDetails(DetailsData) {
   document.getElementById("row-data").innerHTML = box;
 }
 
-$("#SearchLink").click(function () {
-  DisplaySearch();
-});
 
 function DisplaySearch() {
   CloseSideNav();
@@ -179,14 +260,6 @@ function DisplaySearch() {
   document.getElementById("Searchinputs").innerHTML = box;
 }
 
-async function categoriesAPI() {
-  CloseSideNav();
-  let response = await fetch(
-    `https://www.themealdb.com/api/json/v1/1/categories.php`
-  );
-  let result = await response.json();
-  Displaycategories(result);
-}
 
 function Displaycategories(result) {
   CloseSideNav();
@@ -216,14 +289,6 @@ function Displaycategories(result) {
   document.getElementById("row-data").innerHTML = box;
 }
 
-async function FilterbyCategoryAPI(Category) {
-  CloseSideNav();
-  let response = await fetch(
-    `https://www.themealdb.com/api/json/v1/1/filter.php?c=${Category}`
-  );
-  let result = await response.json();
-  DisplayFilterbyCategory(result);
-}
 
 function DisplayFilterbyCategory(result) {
   CloseSideNav();
@@ -249,17 +314,6 @@ function DisplayFilterbyCategory(result) {
   document.getElementById("row-data").innerHTML = box;
 }
 
-$("#CategoriesLink").click(function () {
-  categoriesAPI();
-});
-
-async function AriaAPI() {
-  let response = await fetch(
-    "https://www.themealdb.com/api/json/v1/1/list.php?a=list"
-  );
-  let result = await response.json();
-  DisplayAllAria(result);
-}
 
 function DisplayAllAria(result) {
   CloseSideNav();
@@ -280,14 +334,6 @@ function DisplayAllAria(result) {
   document.getElementById("row-data").innerHTML = box;
 }
 
-async function FilterbyAriaAPI(Aria) {
-  let response = await fetch(
-    `https://www.themealdb.com/api/json/v1/1/filter.php?a=${Aria}`
-  );
-  let result = await response.json();
-  console.log(result, "filter by aria");
-  DisplayFoodbyAria(result);
-}
 
 function DisplayFoodbyAria(result) {
   CloseSideNav();
@@ -313,17 +359,7 @@ function DisplayFoodbyAria(result) {
   document.getElementById("row-data").innerHTML = box;
 }
 
-$("#AreaLink").click(function () {
-  AriaAPI();
-});
 
-async function getallIngredientsAPI() {
-  let response = await fetch(
-    `https://www.themealdb.com/api/json/v1/1/list.php?i=list`
-  );
-  let result = await response.json();
-  DisplayIngredients(result);
-}
 
 function DisplayIngredients(result) {
   CloseSideNav();
@@ -348,13 +384,6 @@ function DisplayIngredients(result) {
   document.getElementById("row-data").innerHTML = box;
 }
 
-async function FilterbymainingredientAPI(ingredient) {
-  let response = await fetch(
-    `https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredient}`
-  );
-  let result = await response.json();
-  DisplayFilterbyMainIngredient(result);
-}
 
 function DisplayFilterbyMainIngredient(result) {
   CloseSideNav();
@@ -380,9 +409,6 @@ function DisplayFilterbyMainIngredient(result) {
   document.getElementById("row-data").innerHTML = box;
 }
 
-$("#IngredientsLink").click(function () {
-  getallIngredientsAPI();
-});
 
 function showContacts() {
     CloseSideNav();
@@ -422,6 +448,12 @@ function showContacts() {
     addFocusListeners();
 }
 
+
+// <=========== Displays Functions ===========> //
+
+
+// <=========== Regex On Contacts ===========> //
+
 function addFocusListeners() {
     document.querySelectorAll("input").forEach(input => {
         input.addEventListener("focus", () => { window[input.id + "Touched"] = true;});
@@ -460,6 +492,36 @@ function inputsValidation() {
 
 }
 
+// <=========== Regex On Contacts ===========> //
+
+
+
+$("#SearchLink").click(function () {
+  DisplaySearch();
+});
+
+$("#CategoriesLink").click(function () {
+  categoriesAPI();
+});
+
+
+$("#AreaLink").click(function () {
+  AriaAPI();
+});
+
+
+$("#IngredientsLink").click(function () {
+  getallIngredientsAPI();
+});
+
 $('#ContactLink').click(function(){
   showContacts();
-})
+});
+
+$("#open-icon").click(function () {
+  if ($(".side-nav").css("left") == "0px") {
+    CloseSideNav();
+  } else {
+    OpenSideNav();
+  }
+});
