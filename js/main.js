@@ -83,7 +83,6 @@ async function DetailsbyidAPI(id) {
       `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
     );
     let result = await response.json();
-    console.log(result);
     DisplayDetails(result);
   } catch (error) {
     console.error("Error fetching details:", error);
@@ -122,7 +121,6 @@ async function FilterbyAriaAPI(Aria) {
     `https://www.themealdb.com/api/json/v1/1/filter.php?a=${Aria}`
   );
   let result = await response.json();
-  console.log(result, "filter by aria");
   DisplayFoodbyAria(result);
 }
 
@@ -159,9 +157,6 @@ function closedetails() {
 }
 
 function DisplayMeals(data) {
-  document.getElementById("Searchinputs").classList.remove("d-none");
-  document.getElementById("row-data").innerHTML = "";
-
   let box = ``;
   let meals = data.meals;
 
@@ -185,8 +180,6 @@ function DisplayMeals(data) {
 
 
 function DisplayDetails(DetailsData) {
-  document.getElementById("row-data").innerHTML = "";
-  document.getElementById("Searchinputs").classList.add("d-none");
   let meal = DetailsData.meals[0];
 
   let ingredients = ``;
@@ -215,7 +208,6 @@ function DisplayDetails(DetailsData) {
             <h4 class="fs-2">${meal.strMeal}</h4>
         </div>
         <div class="col-md-8 text-white position-relative">
-            <i class="fa-solid position-absolute fa-x closedetails fs-4" onclick="GenerateNewFoodAPI('')"></i>
             <h3>Instructions</h3>
             <p>${meal.strInstructions}</p>
             <p class="fw-bold fs-3">Area: ${meal.strArea}</p>
@@ -525,3 +517,5 @@ $("#open-icon").click(function () {
     OpenSideNav();
   }
 });
+
+
