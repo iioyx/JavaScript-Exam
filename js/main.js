@@ -157,8 +157,7 @@ function closedetails() {
 }
 
 function DisplayMeals(data) {
-  $('.loader').fadeOut(400, function() {
-    $('#row-data').fadeIn(400);
+  
     let box = ``;
     let meals = data.meals;
 
@@ -178,7 +177,7 @@ function DisplayMeals(data) {
     }
 
     $('#row-data').html(box);
-  });
+  
 }
 
 function DisplayDetails(DetailsData) {
